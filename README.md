@@ -4,9 +4,6 @@ A portable remote controller for WifiDuck by SpacehuhnTech
 This repository is intended to add on to the work of [SpacehuhnTech's WifiDuck](https://github.com/SpacehuhnTech/WiFiDuck).
 
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/yourusername/your-repo/build.yml)](https://github.com/yourusername/your-repo/actions)
-
-
 ## Table of Contents
 
 - [Installation](#installation)
