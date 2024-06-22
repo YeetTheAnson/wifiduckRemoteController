@@ -1,7 +1,7 @@
 # wifiduckRemoteController
 A portable remote controller for WifiDuck by SpacehuhnTech
 
-This repository is intended to add on to the work of [Original Project](https://github.com/SpacehuhnTech/WiFiDuck).
+This repository is intended to add on to the work of [SpacehuhnTech's WifiDuck](https://github.com/SpacehuhnTech/WiFiDuck).
 
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/yourusername/your-repo/build.yml)](https://github.com/yourusername/your-repo/actions)
@@ -16,7 +16,7 @@ This repository is intended to add on to the work of [Original Project](https://
 
 ## Installation
 
-1. Go to the [Releases](https://github.com/yourusername/your-repo/releases) page and download the latest release file.
+1. Go to the [Releases](https://github.com/YeetTheAnson/wifiduckRemoteController/releases) page and download the latest release file.
 2. Open the `.ino` file in Arduino IDE.
 3. Set the configuration by changing the SSID and password in the code.
 4. Add ESP8266 to the board manager:
