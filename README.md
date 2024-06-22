@@ -44,6 +44,6 @@ This repository is intended to add on to the work of [SpacehuhnTech's WifiDuck](
 
 ## Acknowledgements
 
-Special thanks to [SpacehuhnTech](https://github.com/SpacehuhnTech/WiFiDuck) for WiFiDuck. @SpacehuhnTech @Spacehuhn Technologies
+Special thanks to [SpacehuhnTech](https://github.com/SpacehuhnTech/WiFiDuck) for WiFiDuck.
 
 
