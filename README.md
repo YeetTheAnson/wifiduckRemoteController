@@ -23,6 +23,7 @@ This repository is intended to add on to the work of [SpacehuhnTech's WifiDuck](
 6. Flash the code to the ESP8266.
 
 ## Usage
+![Circuit Diagram](https://github.com/YeetTheAnson/wifiduckRemoteController/raw/main/Circuit%20Diagram.png)
 
 1. Connect the buttons:
     - Up button to GPIO12
