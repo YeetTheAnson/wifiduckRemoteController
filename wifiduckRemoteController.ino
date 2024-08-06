@@ -4,12 +4,64 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 
-const char* ssid = "wifiduck";
+const char* ssid = "wifiduck";          
 const char* password = "wifiduck";        
 const char* ssidAlt = "wifiduckalt";      
 const char* passwordAlt = "wifiduckalt";  
 const char* webSocketServerAddress = "192.168.4.1";
 const int webSocketServerPort = 80;
+
+String receivedMessage;
+String menuItemsArray[100];
+int numberhaha = 0;
+
+void sendWebSocketMessage(WiFiClient& client, String message) {
+  // Craft the WebSocket frame
+  byte header[2];
+  header[0] = 0b10000001; 
+  header[1] = message.length(); 
+
+  // Send the frame header
+  client.write(header, sizeof(header));
+
+  client.print(message);
+}
+
+
+// Strips out unnecessary parts 
+bool receiveAndPrintWebSocketMessage(WiFiClient& client) {
+  String message = "";
+  while (client.available()) {
+    char c = client.read();
+    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' ' || c == '\n') {
+      message += c;
+    }
+  }
+
+  // Split the message into array
+  int start = 0;
+  bool lastCharWasSpace = true;
+  for (int i = 0; i < message.length(); i++) {
+    if (message[i] == ' ' || message[i] == '\n') {
+      if (!lastCharWasSpace) {
+        String item = message.substring(start, i);
+        menuItemsArray[numberhaha++] = item; // Store in the array
+      }
+      start = i + 1;
+      lastCharWasSpace = true;
+    } else {
+      lastCharWasSpace = false;
+    }
+  }
+  if (!lastCharWasSpace) {
+    String lastItem = message.substring(start);
+    menuItemsArray[numberhaha++] = lastItem;
+  }
+
+  receivedMessage = message;
+  Serial.println(receivedMessage);
+  return true;
+}
 
 void setup() {
   Serial.begin(9600);
@@ -33,6 +85,7 @@ void setup() {
   if (client.connect(webSocketServerAddress, webSocketServerPort)) {
     Serial.println("Connected to WebSocket server");
 
+    // Craft and send the WebSocket handshake request
     String handshake = "GET /ws HTTP/1.1\r\n"
                        "Host: " + String(webSocketServerAddress) + "\r\n"
                        "Upgrade: websocket\r\n"
@@ -42,6 +95,7 @@ void setup() {
                        "Origin: http://192.168.4.1\r\n\r\n";
     client.print(handshake);
 
+    // Wait for and print the server's response
     while (!client.available()) {
       delay(10);
     }
@@ -49,31 +103,28 @@ void setup() {
       Serial.write(client.read());
     }
 
-    // Send a test message
-    String message = "ls";
-    byte header[2];
-    header[0] = 0b10000001; // FIN bit set, text frame (opcode 1)
-    header[1] = message.length(); // Payload length
-    client.write(header, sizeof(header));
-    client.print(message);
+    // Send the ls
+    sendWebSocketMessage(client, "ls");
 
-    // Wait for and print the server's response
+    // Receive and print the WebSocket message
     while (client.connected()) {
       if (client.available()) {
-        while (client.available()) {
-          Serial.write(client.read());
+        if (receiveAndPrintWebSocketMessage(client)) {
+          break; 
         }
       }
     }
 
-    // Close the WebSocket connection
     client.stop();
     Serial.println("WebSocket connection closed");
+
+    for (int i = 0; i < numberhaha; i++) {
+      Serial.println(menuItemsArray[i]);
+    }
   } else {
     Serial.println("Failed to connect to WebSocket server");
   }
 }
 
 void loop() {
-  // Empty loop
 }
